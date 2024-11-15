@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Details</title>
+</head>
+<body>
+<h1>Search results</h1>
+<ul>
+    <li th:each="searchResult : ${searchResults}">
+        <span th:text="${searchResult.searchServiceName}">SearchService Name</span>:
+        <span th:text="${searchResult.totalHits}">Number of total hits</span>
+    </li>
+</ul>
+
+<a href="/">Search Again</a>
+</body>
+</html>
