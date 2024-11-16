@@ -1,20 +1,24 @@
-package com.voyado.elevate.app;
+package com.voyado.elevate.app.searchservice;
 
-import com.voyado.elevate.app.searchservice.SearchResult;
-import com.voyado.elevate.app.searchservice.SearchService;
-import com.voyado.elevate.app.searchservice.SearchServiceFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class AppSearchAggregatorService {
+
+    @Autowired
+    private final SearchServiceFactory searchServiceFactory;
+    public AppSearchAggregatorService(SearchServiceFactory searchServiceFactory) {
+        this.searchServiceFactory = searchServiceFactory;
+    }
 
     public String getSearchResult(String query, Model model) {
 
-        SearchServiceFactory searchServiceFactory = new SearchServiceFactory();
         List<SearchService> searchServices = searchServiceFactory.createSearchServices();
 
         List<SearchResult> searchResults = new ArrayList<>();

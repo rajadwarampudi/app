@@ -1,6 +1,5 @@
 package com.voyado.elevate.app.searchservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,13 +8,14 @@ import java.util.List;
 @Component
 public class SearchServiceFactory {
 
-    @Autowired
-    public SearchServiceFactory() {
+    private final GoogleSearchService googleSearchService;
+    public SearchServiceFactory(GoogleSearchService googleSearchService) {
+        this.googleSearchService = googleSearchService;
     }
 
     public List<SearchService> createSearchServices() {
         List<SearchService> searchServices = new ArrayList<>();
-        searchServices.add(new GoogleSearchService());
+        searchServices.add(googleSearchService);
         return searchServices;
     }
 }

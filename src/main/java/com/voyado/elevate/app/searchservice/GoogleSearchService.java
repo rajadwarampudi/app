@@ -1,27 +1,29 @@
 package com.voyado.elevate.app.searchservice;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@PropertySource("classpath:application.properties")
 public class GoogleSearchService implements SearchService {
-    @Value("${google.api.key}")
+    @Value("${searchservice.google.api.key}")
     private String apiKey;
 
-    @Value("${google.cse.id}")
+    @Value("${searchservice.google.cse.id}")
     private String cseId;
 
     private final SearchResult searchResult;
     private final String url;
 
-    @Autowired
     public GoogleSearchService() {
         searchResult = new SearchResult(SearchServiceName.GOOGLE_SEARCH);
+        if(apiKey != null) {
+            System.out.println("apiKey: " + apiKey);
+        }
+        if(cseId != null) {
+            System.out.println("cseId: " + cseId);
+        }
         url = String.format(
                 "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s", apiKey, cseId);
     }

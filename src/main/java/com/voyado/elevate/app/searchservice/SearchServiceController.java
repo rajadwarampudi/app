@@ -1,4 +1,4 @@
-package com.voyado.elevate.app;
+package com.voyado.elevate.app.searchservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,19 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class HitController {
+public class SearchServiceController {
 
-    //@Value("${google.api.key}")
-    //private String apiKey;
-
-    //@Value("${google.cse.id}")
-    //private String cseId;
-
-    private final AppSearchAggregatorService myService;
+    private final AppSearchAggregatorService searchAggregatorService;
 
     @Autowired
-    public HitController(AppSearchAggregatorService myService) {
-        this.myService = myService;
+    public SearchServiceController(AppSearchAggregatorService myService) {
+        this.searchAggregatorService = myService;
     }
 
     @GetMapping("/")
@@ -31,6 +25,6 @@ public class HitController {
     @PostMapping("/searchhits")
     public String search(@RequestParam("query") String query, Model model) {
 
-        return myService.getSearchResult(query, model);
+        return searchAggregatorService.getSearchResult(query, model);
     }
 }
