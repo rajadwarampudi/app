@@ -18,12 +18,6 @@ public class GoogleSearchService implements SearchService {
 
     public GoogleSearchService() {
         searchResult = new SearchResult(SearchServiceName.GOOGLE_SEARCH);
-        if(apiKey != null) {
-            System.out.println("apiKey: " + apiKey);
-        }
-        if(cseId != null) {
-            System.out.println("cseId: " + cseId);
-        }
         url = String.format(
                 "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s", apiKey, cseId);
     }
@@ -31,22 +25,26 @@ public class GoogleSearchService implements SearchService {
 
     @Override
     public SearchResult search(String query) {
-        String urlWithQuery = String.format("%s&q=%s", url, query);
+        String[] words = query.split(" ");
+        long totalHits = 0L;
+        for(String word : words) {
+            String urlWithQuery = String.format("%s&q=%s", url, word);
+            RestTemplate restTemplate = new RestTemplate();
+            String response = restTemplate.getForObject(urlWithQuery, String.class);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(urlWithQuery, String.class);
+            if (response != null) {
+                JSONObject jsonResponse = new JSONObject(response);
+                String totalResults = jsonResponse.getJSONObject("searchInformation")
+                        .getString("totalResults");
 
-        if (response != null) {
-            JSONObject jsonResponse = new JSONObject(response);
-            String totalResults = jsonResponse.getJSONObject("searchInformation")
-                    .getString("totalResults");
-
-            System.out.println("query: " + query);
-            System.out.println("total results: " + totalResults);
-            searchResult.setTotalHits(totalResults);
-        } else {
-            searchResult.setTotalHits("Error retrieving data");
+                totalHits += Long.parseLong(totalResults);
+            } else {
+                searchResult.setTotalHits("Error retrieving data");
+                return searchResult;
+            }
         }
+
+        searchResult.setTotalHits(String.valueOf(totalHits));
         return searchResult;
     }
 }
