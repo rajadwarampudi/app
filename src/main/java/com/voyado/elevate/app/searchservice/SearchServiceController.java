@@ -1,6 +1,7 @@
 package com.voyado.elevate.app.searchservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class SearchServiceController {
 
-    private final AppSearchAggregatorService searchAggregatorService;
+    @Value("${searchservice.google.api.key}")
+    private String apiKey;
+
+    @Value("${searchservice.google.cse.id}")
+    private String cseId;
 
     @Autowired
-    public SearchServiceController(AppSearchAggregatorService myService) {
-        this.searchAggregatorService = myService;
-    }
+    AppSearchAggregatorService searchAggregatorService;
 
     @GetMapping("/")
     public String index() {

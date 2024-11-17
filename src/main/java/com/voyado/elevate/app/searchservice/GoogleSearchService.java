@@ -1,9 +1,9 @@
 package com.voyado.elevate.app.searchservice;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import static com.voyado.elevate.app.searchservice.SearchUtil.getSearchValue;
 
 @Service
 public class GoogleSearchService implements SearchService {
@@ -14,37 +14,21 @@ public class GoogleSearchService implements SearchService {
     private String cseId;
 
     private final SearchResult searchResult;
-    private final String url;
 
     public GoogleSearchService() {
         searchResult = new SearchResult(SearchServiceName.GOOGLE_SEARCH);
-        url = String.format(
-                "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s", apiKey, cseId);
     }
 
 
     @Override
     public SearchResult search(String query) {
-        String[] words = query.split(" ");
-        long totalHits = 0L;
-        for(String word : words) {
-            String urlWithQuery = String.format("%s&q=%s", url, word);
-            RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(urlWithQuery, String.class);
 
-            if (response != null) {
-                JSONObject jsonResponse = new JSONObject(response);
-                String totalResults = jsonResponse.getJSONObject("searchInformation")
-                        .getString("totalResults");
+        String url = String.format(
+                "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s", apiKey, cseId);
 
-                totalHits += Long.parseLong(totalResults);
-            } else {
-                searchResult.setTotalHits("Error retrieving data");
-                return searchResult;
-            }
-        }
+        String searchValue = getSearchValue(url, query);
 
-        searchResult.setTotalHits(String.valueOf(totalHits));
+        searchResult.setTotalHits(String.valueOf(searchValue));
         return searchResult;
     }
 }
