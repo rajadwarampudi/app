@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import static com.voyado.elevate.app.searchservice.SearchUtil.getSearchValue;
 
 @Service
-public class GoogleSearchService implements SearchService {
-    @Value("${searchservice.google.api.key}")
+public class YahooSearchService implements SearchService {
+    @Value("${searchservice.yahoo.api.key}")
     private String apiKey;
 
     @Value("${searchservice.cse.id}")
@@ -15,8 +15,8 @@ public class GoogleSearchService implements SearchService {
 
     private final SearchResult searchResult;
 
-    public GoogleSearchService() {
-        searchResult = new SearchResult(SearchServiceName.GOOGLE_SEARCH);
+    public YahooSearchService() {
+        searchResult = new SearchResult(SearchServiceName.YAHOO_SEARCH);
     }
 
 
