@@ -1,4 +1,4 @@
-package com.voyado.elevate.app.searchservice;
+package com.voyado.elevate.app.searchservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

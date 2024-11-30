@@ -1,4 +1,4 @@
-package com.voyado.elevate.app.searchservice;
+package com.voyado.elevate.app.searchservice.services;
 
 public class SearchResult {
     private final SearchServiceName searchServiceName;
