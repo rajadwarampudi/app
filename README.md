@@ -8,6 +8,8 @@ searchservice.google.api.key=YOUR_CUSTOM_SEARCH_GOOGLE_API_KEY
 searchservice.yahoo.api.key=YOUR_CUSTOM_SEARCH_YAHOO_API_KEY
 searchservice.cse.id=YOUR_CSE_ID
 
+Please note that you don't need to create two CSE IDs for two search services. One CSE ID is sufficient for both of them.
+
 Running the application:
 1. The spring boot application with the following command:  mvn spring-boot:run
 2. The spring boot application initiates its embedded tomcat server that runs the web-app
