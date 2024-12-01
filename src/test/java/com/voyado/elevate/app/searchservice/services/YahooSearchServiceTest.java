@@ -11,30 +11,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class GoogleSearchServiceTest {
+public class YahooSearchServiceTest {
 
     @Autowired
-    private GoogleSearchService googleSearchService;
+    private YahooSearchService yahooSearchService;
 
     @Test
     void testSuccessfulSearchWithSingleWordPhrase() throws SearchServiceException {
         String query = "sweden";
-        SearchResult searchResult = googleSearchService.search(query);
-        assertEquals(searchResult.getSearchServiceName(), SearchServiceName.GOOGLE_SEARCH.toString());
+        SearchResult searchResult = yahooSearchService.search(query);
+        assertEquals(searchResult.getSearchServiceName(), SearchServiceName.YAHOO_SEARCH.toString());
         assertNotEquals(searchResult.getTotalHits(), "0");
     }
 
     @Test
     void testSuccessfulSearchWithTwoWordsPhraseEndEqualsToSumOfIndividualHits() throws SearchServiceException {
         String word1 = "sweden";
-        SearchResult searchResultSweden = googleSearchService.search(word1);
+        SearchResult searchResultSweden = yahooSearchService.search(word1);
         long totalHitsForWord1 = Long.parseLong(searchResultSweden.getTotalHits());
 
         String gibbarishWord = "sdskfdsfdfjdskfsdjflserjeafsjsdflkjsdflsdkfj";
-        SearchResult searchResultIndia = googleSearchService.search(gibbarishWord);
+        SearchResult searchResultIndia = yahooSearchService.search(gibbarishWord);
         long totalHitsForWord2 = Long.parseLong(searchResultIndia.getTotalHits());
 
-        SearchResult searchResultBothWords = googleSearchService.search(word1 + " " + gibbarishWord);
+        SearchResult searchResultBothWords = yahooSearchService.search(word1 + " " + gibbarishWord);
         long totalHitsForBothWords = Long.parseLong(searchResultBothWords.getTotalHits());
 
         assertEquals(totalHitsForBothWords, totalHitsForWord1 + totalHitsForWord2);
@@ -43,11 +43,11 @@ public class GoogleSearchServiceTest {
 
     @Test
     void testUnsuccessfulSearchThrowsException() throws SearchServiceException {
-        ReflectionTestUtils.setField(googleSearchService, "apiKey", null);
+        ReflectionTestUtils.setField(yahooSearchService, "apiKey", null);
         String query = "sweden";
         SearchServiceException exception = assertThrows(SearchServiceException.class, () -> {
-            googleSearchService.search("testQuery");
+            yahooSearchService.search("testQuery");
         });
-        assertEquals("API key is empty for the service: " + SearchServiceName.GOOGLE_SEARCH, exception.getMessage());
+        assertEquals("API key is empty for the service: " + SearchServiceName.YAHOO_SEARCH, exception.getMessage());
     }
 }
